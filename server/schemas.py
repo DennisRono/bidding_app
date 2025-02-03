@@ -1,4 +1,3 @@
-from typing import Dict
 from pydantic import BaseModel
 
 class UserBase(BaseModel):
@@ -17,10 +16,8 @@ class UserLogin():
         orm_mode = True
 
 class LoginRespose():
-    __root__: Dict[str, str]
-
-    class Config:
-        orm_mode = True
+    access_token: str
+    refresh_token: str
 
 class CreateUser(UserBase):
     class Config:

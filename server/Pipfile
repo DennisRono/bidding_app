@@ -8,6 +8,7 @@ fastapi = {extras = ["standard"], version = "*"}
 python-dotenv = "*"
 psycopg2 = "*"
 werkzeug = "*"
+fastapi-socketio = "*"
 
 [dev-packages]
 
