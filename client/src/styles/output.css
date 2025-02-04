@@ -860,6 +860,10 @@ body {
   min-height: 100svh;
 }
 
+.min-h-\[60px\] {
+  min-height: 60px;
+}
+
 .\!w-\[300px\] {
   width: 300px !important;
 }
@@ -1326,6 +1330,10 @@ body {
   line-height: 1rem;
 }
 
+.text-\[0\.8rem\] {
+  font-size: 0.8rem;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -1405,6 +1413,10 @@ body {
 
 .text-sidebar-primary-foreground {
   color: hsl(var(--sidebar-primary-foreground));
+}
+
+.text-destructive {
+  color: hsl(var(--destructive));
 }
 
 .underline-offset-4 {
@@ -1782,6 +1794,14 @@ body {
 
 .peer\/menu-button:hover ~ .peer-hover\/menu-button\:text-sidebar-accent-foreground {
   color: hsl(var(--sidebar-accent-foreground));
+}
+
+.peer:disabled ~ .peer-disabled\:cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+.peer:disabled ~ .peer-disabled\:opacity-70 {
+  opacity: 0.7;
 }
 
 .has-\[\[data-variant\=inset\]\]\:bg-sidebar:has([data-variant=inset]) {
