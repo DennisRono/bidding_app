@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "watch": "npx tailwindcss -i input.css -o output.css --watch"
+    "watch": "npx tailwindcss -i src/styles/input.css -o src/styles/output.css --watch"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.1",

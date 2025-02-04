@@ -4,7 +4,9 @@ from dotenv import load_dotenv
 from fastapi import Depends, FastAPI
 from sqlmodel import Session, create_engine
 from fastapi_socketio import SocketManager
-from auth import router
+from auth import auth_router
+from bid import bid_router
+from products import product_router
 from database import get_db
 import models
 
@@ -20,4 +22,6 @@ SessionDep = Annotated[Session, Depends(get_db)]
 
 app = FastAPI()
 socket_manager = SocketManager(app=app)
-app.include_router(router)
+app.include_router(auth_router)
+app.include_router(bid_router)
+app.include_router(product_router)

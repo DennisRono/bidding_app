@@ -2,6 +2,7 @@ from typing import Union, Any
 from datetime import datetime
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from sqlalchemy.orm import Session
 from database import get_db
 from helpers.auth import (
     ALGORITHM,
@@ -10,23 +11,21 @@ from helpers.auth import (
 
 from jose import jwt
 from pydantic import ValidationError
-from schemas import LoginRespose, SystemUser
-
-db = get_db()
+import models
+from schemas import SystemUser, TokData
 
 reuseable_oauth = OAuth2PasswordBearer(
-    tokenUrl="/login",
+    tokenUrl="/auth/login",
     scheme_name="JWT"
 )
 
 
-async def get_current_user(token: str = Depends(reuseable_oauth)) -> SystemUser:
+async def get_current_user(token: str = Depends(reuseable_oauth), db:Session = Depends(get_db)) -> SystemUser:
     try:
         payload = jwt.decode(
             token, JWT_SECRET_KEY, algorithms=[ALGORITHM]
         )
-        token_data = LoginRespose(**payload)
-
+        token_data = TokData(**payload)
         if datetime.fromtimestamp(token_data.exp) < datetime.now():
             raise HTTPException(
                 status_code = status.HTTP_401_UNAUTHORIZED,
@@ -40,13 +39,13 @@ async def get_current_user(token: str = Depends(reuseable_oauth)) -> SystemUser:
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    user: Union[dict[str, Any], None] = db.get(token_data.sub, None)
-
+    user = db.query(models.Users).filter(models.Users.email == token_data.sub).first()
 
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Could not find user",
         )
-
-    return SystemUser(**user)
+    
+    print(user)
+    return user

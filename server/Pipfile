@@ -9,6 +9,7 @@ python-dotenv = "*"
 psycopg2 = "*"
 werkzeug = "*"
 fastapi-socketio = "*"
+alembic = "*"
 
 [dev-packages]
 
