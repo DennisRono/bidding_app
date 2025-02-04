@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import '@/styles/output.css'
+import Providers from '@/store/redux-provider'
 
 export const metadata: Metadata = {
   title: 'Bidding Application',
@@ -13,7 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   )
 }

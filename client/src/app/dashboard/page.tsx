@@ -1,0 +1,65 @@
+'use client'
+import { AppSidebar } from '@/components/app-sidebar'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
+import { Separator } from '@/components/ui/separator'
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from '@/components/ui/sidebar'
+import { useAppSelector } from '@/store/hooks'
+import CreateAuction from '@/views/create-auction'
+import Dash from '@/views/dash'
+import ViewAuctions from '@/views/view-auctions'
+
+export default function Page() {
+  const playtab = useAppSelector((state) => state.tab).tab
+  const renderContent = () => {
+    switch (playtab) {
+      case 'dashboard':
+        return <Dash />
+      case 'create-auction':
+        return <CreateAuction />
+      case 'view-auctions':
+        return <ViewAuctions />
+      default:
+        return <Dash />
+    }
+  }
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">
+                    Building Your Application
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </header>
+        <div className="h-[calc(100vh-56px)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-900 scrollbar-track-transparent dark:bg-[#242424]">
+          <div className="p-4 max-w-7xl mx-auto">{renderContent()}</div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  )
+}
