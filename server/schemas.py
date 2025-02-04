@@ -38,9 +38,14 @@ class LoginResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 class CreateUser(UserBase):
-    pass
+    id: int
+    full_name: str
+    email: str
+    role: str
+    created_at: datetime
 
 class NewProduct(BaseModel):
+    id: int
     product_name: str
     product_image_urls: list[str]
     product_description: str

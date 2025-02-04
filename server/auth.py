@@ -59,3 +59,4 @@ def refresh_access_token(token: schemas.TokenRefresh):
             status_code=status.HTTP_401_UNAUTHORIZED, 
             detail="Invalid refresh token"
         )
+    
