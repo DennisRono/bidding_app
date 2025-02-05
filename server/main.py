@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from auth import auth_router
 from bid import bid_router
 from products import product_router
+from auctions import auction_router
 from database import get_db
 import models
 
@@ -39,3 +40,4 @@ socket_manager = SocketManager(app=app)
 app.include_router(auth_router)
 app.include_router(bid_router)
 app.include_router(product_router)
+app.include_router(auction_router)

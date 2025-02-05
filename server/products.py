@@ -13,7 +13,7 @@ import schemas
 product_router = APIRouter(prefix="/products")
 
 # user should have role=admin to create a product
-@product_router.post('/new', status_code=status.HTTP_201_CREATED)
+@product_router.post('/create', status_code=status.HTTP_201_CREATED)
 def create_new_product(product:schemas.NewProduct, db:Session = Depends(get_db), user = Depends(get_current_user)):
     print(user, product)
     new_product = models.Products(

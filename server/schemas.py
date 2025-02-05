@@ -78,3 +78,11 @@ class BidResponse(BaseModel):
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+class AuctionBase(BaseModel):
+    auction_name: str
+    auction_description: str
+    start_time: datetime
+    end_time: datetime
+
+    model_config = ConfigDict(from_attributes=True)

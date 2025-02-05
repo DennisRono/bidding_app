@@ -16,13 +16,16 @@ def register_user(user_user:schemas.UserBase, db:Session = Depends(get_db)):
     emailv_user = db.query(models.Users).filter(models.Users.email == user_user.email).first()
     if emailv_user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
-    new_user = models.Users(
-        id = user_user.id,
-        full_name = user_user.full_name,
-        email = user_user.email,
-        role=user_user.role,
-        password_hash = get_hashed_password(user_user.password)
-    )
+    try:
+        new_user = models.Users(
+            id=user_user.id,
+            full_name=user_user.full_name,
+            email=user_user.email,
+            role=user_user.role,
+            password_hash=get_hashed_password(user_user.password)
+        )
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
     db.add(new_user)
     db.commit()
     db.refresh(new_user)

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -17,6 +18,9 @@ import {
 import { Loader2 } from 'lucide-react'
 import { api } from '@/lib/api'
 
+const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp']
+
 const formSchema = z.object({
   companyName: z.string().min(2, {
     message: 'Company name must be at least 2 characters.',
@@ -27,9 +31,13 @@ const formSchema = z.object({
   biddingDate: z.string().nonempty({
     message: 'Bidding date is required.',
   }),
-  startingBid: z.number().min(1, {
-    message: 'Starting bid must be at least 1.',
-  }),
+  image: z
+    .any()
+    .refine((file) => file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
+    .refine(
+      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
+      'Only .jpg, .png, and .webp formats are supported.'
+    ),
 })
 
 export default function CreateAuction() {
@@ -41,14 +49,25 @@ export default function CreateAuction() {
       companyName: '',
       description: '',
       biddingDate: '',
-      startingBid: 0,
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsSubmitting(true)
-      const res = await api('create-auction', { method: 'POST', body: values })
+      const formData = new FormData()
+      formData.append('companyName', values.companyName)
+      formData.append('description', values.description)
+      formData.append('biddingDate', values.biddingDate)
+      formData.append('image', values.image)
+
+      const res = await api('create-auction', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          // Don't set Content-Type header, let the browser set it with the correct boundary for FormData
+        },
+      })
       const data = await res.json()
       if (res.ok) {
         // clear input fields
@@ -74,7 +93,7 @@ export default function CreateAuction() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  Company Name <span className="text-red">*</span>
+                  Company Name <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -93,7 +112,7 @@ export default function CreateAuction() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  Description <span className="text-red">*</span>
+                  Description <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <Textarea
@@ -112,10 +131,10 @@ export default function CreateAuction() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  Bidding Date <span className="text-red">*</span>
+                  Bidding Start Date <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input type="date" {...field} className="p-5" />
+                  <Input type="date" {...field} className="p-5 w-[150px]" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -123,19 +142,26 @@ export default function CreateAuction() {
           />
           <FormField
             control={form.control}
-            name="startingBid"
-            render={({ field }) => (
+            name="image"
+            render={({ field: { onChange, value, ...rest } }) => (
               <FormItem>
                 <FormLabel>
-                  Starting Bid <span className="text-red">*</span>
+                  Image <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input type="number" {...field} className="p-5" />
+                  <Input
+                    type="file"
+                    accept="image/png, image/jpeg, image/webp"
+                    onChange={(e) => onChange(e.target.files?.[0])}
+                    {...rest}
+                    className="p-5"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <div className="flex justify-end w-full">
             <Button
               type="submit"

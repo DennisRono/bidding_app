@@ -730,6 +730,10 @@ body {
   margin-bottom: 1rem;
 }
 
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
 .ml-auto {
   margin-left: auto;
 }
@@ -765,18 +769,9 @@ body {
   aspect-ratio: 1 / 1;
 }
 
-.aspect-video {
-  aspect-ratio: 16 / 9;
-}
-
 .size-4 {
   width: 1rem;
   height: 1rem;
-}
-
-.size-6 {
-  width: 1.5rem;
-  height: 1.5rem;
 }
 
 .size-8 {
@@ -832,6 +827,10 @@ body {
   height: 90vh;
 }
 
+.h-\[calc\(100vh-56px\)\] {
+  height: calc(100vh - 56px);
+}
+
 .h-full {
   height: 100%;
 }
@@ -844,24 +843,16 @@ body {
   height: 100svh;
 }
 
-.h-\[calc\(100vh-56px\)\] {
-  height: calc(100vh - 56px);
-}
-
 .min-h-0 {
   min-height: 0px;
 }
 
-.min-h-\[100vh\] {
-  min-height: 100vh;
+.min-h-\[60px\] {
+  min-height: 60px;
 }
 
 .min-h-svh {
   min-height: 100svh;
-}
-
-.min-h-\[60px\] {
-  min-height: 60px;
 }
 
 .\!w-\[300px\] {
@@ -888,12 +879,12 @@ body {
   width: 1rem;
 }
 
-.w-48 {
-  width: 12rem;
-}
-
 .w-5 {
   width: 1.25rem;
+}
+
+.w-6 {
+  width: 1.5rem;
 }
 
 .w-7 {
@@ -926,6 +917,23 @@ body {
 
 .w-full {
   width: 100%;
+}
+
+.w-min {
+  width: -moz-min-content;
+  width: min-content;
+}
+
+.w-\[300px\] {
+  width: 300px;
+}
+
+.w-\[200px\] {
+  width: 200px;
+}
+
+.w-\[150px\] {
+  width: 150px;
 }
 
 .min-w-0 {
@@ -985,6 +993,16 @@ body {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
 .cursor-default {
   cursor: default;
 }
@@ -993,10 +1011,6 @@ body {
   -webkit-user-select: none;
      -moz-user-select: none;
           user-select: none;
-}
-
-.auto-rows-min {
-  grid-auto-rows: min-content;
 }
 
 .flex-col {
@@ -1057,6 +1071,12 @@ body {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
 }
 
 .overflow-auto {
@@ -1162,12 +1182,13 @@ body {
   background-color: hsl(var(--destructive));
 }
 
-.bg-muted {
-  background-color: hsl(var(--muted));
+.bg-indigo-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(79 70 229 / var(--tw-bg-opacity, 1));
 }
 
-.bg-muted\/50 {
-  background-color: hsl(var(--muted) / 0.5);
+.bg-muted {
+  background-color: hsl(var(--muted));
 }
 
 .bg-popover {
@@ -1224,6 +1245,10 @@ body {
 
 .p-4 {
   padding: 1rem;
+}
+
+.p-5 {
+  padding: 1.25rem;
 }
 
 .p-6 {
@@ -1310,6 +1335,10 @@ body {
   line-height: 1;
 }
 
+.text-\[0\.8rem\] {
+  font-size: 0.8rem;
+}
+
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
@@ -1328,10 +1357,6 @@ body {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.text-\[0\.8rem\] {
-  font-size: 0.8rem;
 }
 
 .font-bold {
@@ -1375,6 +1400,10 @@ body {
   color: hsl(var(--card-foreground));
 }
 
+.text-destructive {
+  color: hsl(var(--destructive));
+}
+
 .text-destructive-foreground {
   color: hsl(var(--destructive-foreground));
 }
@@ -1399,6 +1428,11 @@ body {
   color: hsl(var(--primary-foreground));
 }
 
+.text-red-500 {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity, 1));
+}
+
 .text-secondary-foreground {
   color: hsl(var(--secondary-foreground));
 }
@@ -1415,8 +1449,9 @@ body {
   color: hsl(var(--sidebar-primary-foreground));
 }
 
-.text-destructive {
-  color: hsl(var(--destructive));
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
 .underline-offset-4 {
@@ -1667,6 +1702,11 @@ body {
 
 .hover\:bg-destructive\/90:hover {
   background-color: hsl(var(--destructive) / 0.9);
+}
+
+.hover\:bg-indigo-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(67 56 202 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-primary\/90:hover {
@@ -2147,15 +2187,6 @@ body {
 
   .md\:flex {
     display: flex;
-  }
-
-  .md\:min-h-min {
-    min-height: -moz-min-content;
-    min-height: min-content;
-  }
-
-  .md\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .md\:text-sm {
