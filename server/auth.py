@@ -1,6 +1,7 @@
 from typing import List, Dict
 import uuid
 from fastapi import HTTPException, Depends
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 from starlette import status
 from helpers.auth import create_access_token, create_refresh_token, get_hashed_password, verify_password, JWT_REFRESH_SECRET_KEY, ALGORITHM
@@ -41,6 +42,7 @@ def login_user(user:schemas.UserLogin, db:Session = Depends(get_db)):
     if not verify_password(user.password, emailv_user.password_hash):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"The password provided is wrong!")
     return schemas.LoginResponse.parse_obj({
+        "user": jsonable_encoder(emailv_user),
         "access_token": create_access_token(emailv_user.email),
         "refresh_token": create_refresh_token(emailv_user.email)
     })

@@ -6,18 +6,21 @@ interface User {
   user_id: string | null | undefined
   email: string | null | undefined
   role: 'admin' | 'user' | null | undefined
-  user_state: string | null | undefined
   [key: string]: any
 }
 
 interface LoggedState {
   is_logged: boolean
+  access_token: string | null | undefined
+  refresh_token: string | null | undefined
   user: User
   loginExpiration: number | null
 }
 
 const initialState: LoggedState = {
   is_logged: false,
+  access_token: null,
+  refresh_token: null,
   user: {
     full_name: '',
     phone_number: '',
@@ -37,6 +40,8 @@ const loggedSlice = createSlice({
       state,
       action: PayloadAction<{
         is_logged: boolean
+        access_token: string
+        refresh_token: string
         user: User
       }>
     ) => {

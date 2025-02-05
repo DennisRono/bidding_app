@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Dict, Optional
 import uuid
 from pydantic import BaseModel, ConfigDict
 from decimal import Decimal
@@ -34,6 +34,7 @@ class TokData(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 class LoginResponse(BaseModel):
+    user: Dict
     access_token: str
     refresh_token: str
 
@@ -82,6 +83,7 @@ class BidResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 class AuctionBase(BaseModel):
+    id: Optional[str] = str(uuid.uuid4())
     auction_name: str
     auction_description: str
     start_time: datetime

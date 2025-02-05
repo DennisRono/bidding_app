@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -18,26 +17,19 @@ import {
 import { Loader2 } from 'lucide-react'
 import { api } from '@/lib/api'
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp']
-
 const formSchema = z.object({
-  companyName: z.string().min(2, {
+  company_name: z.string().min(2, {
     message: 'Company name must be at least 2 characters.',
   }),
   description: z.string().min(10, {
     message: 'Description must be at least 10 characters.',
   }),
-  biddingDate: z.string().nonempty({
-    message: 'Bidding date is required.',
+  start_date: z.string().nonempty({
+    message: 'Start date is required.',
   }),
-  image: z
-    .any()
-    .refine((file) => file?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
-    .refine(
-      (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
-      'Only .jpg, .png, and .webp formats are supported.'
-    ),
+  end_date: z.string().nonempty({
+    message: 'Start date is required.',
+  }),
 })
 
 export default function CreateAuction() {
@@ -46,31 +38,22 @@ export default function CreateAuction() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      companyName: '',
+      company_name: '',
       description: '',
-      biddingDate: '',
+      start_date: '',
+      end_date: '',
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setIsSubmitting(true)
-      const formData = new FormData()
-      formData.append('companyName', values.companyName)
-      formData.append('description', values.description)
-      formData.append('biddingDate', values.biddingDate)
-      formData.append('image', values.image)
-
-      const res = await api('create-auction', {
+      const res = await api('auction/create', {
         method: 'POST',
-        body: formData,
-        headers: {
-          // Don't set Content-Type header, let the browser set it with the correct boundary for FormData
-        },
+        body: values,
       })
       const data = await res.json()
       if (res.ok) {
-        // clear input fields
         form.reset()
       } else {
         throw new Error(data.message)
@@ -89,7 +72,7 @@ export default function CreateAuction() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
-            name="companyName"
+            name="company_name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
@@ -125,42 +108,38 @@ export default function CreateAuction() {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="biddingDate"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>
-                  Bidding Start Date <span className="text-red-500">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input type="date" {...field} className="p-5 w-[150px]" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="image"
-            render={({ field: { onChange, value, ...rest } }) => (
-              <FormItem>
-                <FormLabel>
-                  Image <span className="text-red-500">*</span>
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="file"
-                    accept="image/png, image/jpeg, image/webp"
-                    onChange={(e) => onChange(e.target.files?.[0])}
-                    {...rest}
-                    className="p-5"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="flex gap-4">
+            <FormField
+              control={form.control}
+              name="start_date"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Auction Start Date <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input type="date" {...field} className="p-5 w-[150px]" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="end_date"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Auction End Date <span className="text-red-500">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input type="date" {...field} className="p-5 w-[150px]" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <div className="flex justify-end w-full">
             <Button
