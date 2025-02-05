@@ -3,7 +3,7 @@ from decimal import Decimal
 from datetime import datetime
 
 class UserBase(BaseModel):
-    id: int
+    id: str
     full_name: str
     email: str
     role: str
@@ -12,7 +12,7 @@ class UserBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 class SystemUser(BaseModel):
-    id: int
+    id: str
     full_name: str
     email: str
     role: str
@@ -38,14 +38,14 @@ class LoginResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 class CreateUser(UserBase):
-    id: int
+    id: str
     full_name: str
     email: str
     role: str
     created_at: datetime
 
 class NewProduct(BaseModel):
-    id: int
+    id: str
     product_name: str
     product_image_urls: list[str]
     product_description: str
@@ -71,7 +71,7 @@ class BidCreate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 class BidResponse(BaseModel):
-    id: int
+    id: str
     product_id: int
     user_id: int
     bid_amount: Decimal
