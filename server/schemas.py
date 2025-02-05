@@ -1,9 +1,11 @@
+from typing import Optional
+import uuid
 from pydantic import BaseModel, ConfigDict
 from decimal import Decimal
 from datetime import datetime
 
 class UserBase(BaseModel):
-    id: str
+    id: Optional[str] = str(uuid.uuid4())
     full_name: str
     email: str
     role: str
@@ -37,7 +39,7 @@ class LoginResponse(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
-class CreateUser(UserBase):
+class CreateUser(BaseModel):
     id: str
     full_name: str
     email: str
